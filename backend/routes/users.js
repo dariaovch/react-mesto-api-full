@@ -22,15 +22,15 @@ router.post('/signup', celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().url(),
-    email: Joi.string().required().unique().email(),
+    avatar: Joi.string(),
+    email: Joi.string().required().email(),
     password: Joi.string().required().min(6),
   }),
 }), createUser);
 
 router.post('/signin', celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required().unique().email(),
+    email: Joi.string().required().email(),
     password: Joi.string().required().min(6),
   }),
 }), login);
@@ -44,7 +44,7 @@ router.patch('/users/me', auth, celebrate({
 
 router.patch('/users/me/avatar', auth, celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().url(),
+    avatar: Joi.string(),
   }),
 }), updateAvatar);
 
