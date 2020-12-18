@@ -93,9 +93,9 @@ class Api {
 }
 
 const options = {
-    url: 'https://mesto.nomoreparties.co/v1/cohort-15/',
+    url: 'https://api.dariaovchmesto.students.nomoredomains.icu/',
     headers: {
-          authorization: '57f413af-09ac-4c6d-a557-b4a54c66383d',
+          //authorization: '57f413af-09ac-4c6d-a557-b4a54c66383d',
           'Content-Type': 'application/json'
         }
     };
