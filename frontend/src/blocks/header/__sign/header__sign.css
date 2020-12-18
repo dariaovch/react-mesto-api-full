@@ -1,0 +1,11 @@
+.header__sign {
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+    line-height: 1.2;
+    transition: opacity .4s ease-out;
+}
+  
+  .header__sign:hover {
+    opacity: .6;
+}

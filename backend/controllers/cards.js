@@ -1,51 +1,41 @@
 // Получаем модель карточки
 const Card = require('../models/card');
+const NotFoundError = require('../errors/not-found-err');
 
 // Получить массив всех карточек
-module.exports.getCards = (req, res) => {
+module.exports.getCards = (req, res, next) => {
   Card.find({})
     .then((data) => res.send(data))
-    .catch(() => {
-      res.status(500).send({ message: 'Произошла ошибка сервера' });
-    });
+    .catch(next);
 };
 
 // Создать карточку
-module.exports.createCard = (req, res) => {
+module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
 
   return Card.create({ name, link, owner: req.user._id })
     .then((card) => res.send(card))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        res.status(400).send({ message: 'Переданы некорректные данные' });
-        return;
-      }
-
-      res.status(500).send({ message: 'Произошла ошибка сервера' });
-    });
+    .catch(next);
 };
 
 // Удалить карточку
-module.exports.deleteCard = (req, res) => {
-  // const cardId = req.params.id;
-
-  Card.findByIdAndRemove(req.params.id)
+module.exports.deleteCard = (req, res, next) => {
+  Card.findById(req.params.id)
     .then((card) => {
-      if (!card) {
-        res.status(404).send({ message: 'Запрашиваемый ресурс не найден' });
-        return;
+      if (req.user._id === card.owner) {
+        Card.findByIdAndRemove(req.params.id)
+          .then((deletedCard) => {
+            if (!deletedCard) {
+              throw new NotFoundError('Запрашиваемый ресурс не найден');
+            }
+            res.send({ message: 'Карточка удалена' });
+          })
+          .catch(next);
+      } else {
+        throw new Error({ message: 'Нельзя удалять чужие карточки' });
       }
-      res.send({ message: 'Карточка удалена' });
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(404).send({ message: 'Запрашиваемый ресурс не найден' });
-        return;
-      }
-
-      res.status(500).send({ message: 'Произошла ошибка сервера' });
-    });
+    .catch(next);
 };
 
 // Логика постановки и снятия лайка для дальнейшей доработки

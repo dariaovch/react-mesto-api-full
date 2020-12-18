@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { celebrate, Joi } = require('celebrate');
 const auth = require('../middlewares/auth');
 
 const {
@@ -17,12 +18,34 @@ router.get('/users/:id', auth, getUser);
 
 router.get('/users/me', auth, getCurrentUserInfo);
 
-router.post('/signup', createUser);
+router.post('/signup', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string().url(),
+    email: Joi.string().required().unique().email(),
+    password: Joi.string().required().min(6),
+  }),
+}), createUser);
 
-router.post('/signin', login);
+router.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().unique().email(),
+    password: Joi.string().required().min(6),
+  }),
+}), login);
 
-router.patch('/users/me', auth, updateUser);
+router.patch('/users/me', auth, celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+  }),
+}), updateUser);
 
-router.patch('/users/me/avatar', auth, updateAvatar);
+router.patch('/users/me/avatar', auth, celebrate({
+  body: Joi.object().keys({
+    avatar: Joi.string().url(),
+  }),
+}), updateAvatar);
 
 module.exports = router;

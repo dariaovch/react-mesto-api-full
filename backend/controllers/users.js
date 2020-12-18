@@ -1,60 +1,43 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const NotFoundError = require('../errors/not-found-err');
 
 // Получаем модель пользователя
 const User = require('../models/user');
 
 // Получить список всех пользователей
-module.exports.getUsers = (req, res) => {
+module.exports.getUsers = (req, res, next) => {
   User.find({})
     .then((data) => res.send(data))
-    .catch(() => {
-      res.status(500).send({ message: 'Произошла ошибка сервера' });
-    });
+    .catch(next);
 };
 
 // Получить пользовтаеля по айди
-module.exports.getUser = (req, res) => {
+module.exports.getUser = (req, res, next) => {
   User.findById(req.params.id)
     .then((user) => {
       if (!user) {
-        res.status(404).send({ message: 'Нет пользователя с таким id' });
-        return;
+        throw new NotFoundError('Нет пользователя с таким id');
       }
       res.send(user);
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(404).send({ message: 'Запрашиваемый ресурс не найден' });
-        return;
-      }
-
-      res.status(500).send({ message: 'Произошла ошибка сервера' });
-    });
+    .catch(next);
 };
 
 // Получить информацию о текущем пользователе
-module.exports.getCurrentUserInfo = (req, res) => {
+module.exports.getCurrentUserInfo = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
       if (!user) {
-        res.status(404).send({ message: 'Пользователь не найден' });
-        return;
+        throw new NotFoundError('Пользователь не найден');
       }
       res.send(user);
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(404).send({ message: 'Запрашиваемый ресурс не найден' });
-        return;
-      }
-
-      res.status(500).send({ message: 'Произошла ошибка сервера' });
-    });
+    .catch(next);
 };
 
 // Создать пользователя
-module.exports.createUser = (req, res) => {
+module.exports.createUser = (req, res, next) => {
   const {
     name,
     about,
@@ -72,19 +55,12 @@ module.exports.createUser = (req, res) => {
       password: hash,
     })
       .then((user) => res.send(user))
-      .catch((err) => {
-        if (err.name === 'ValidationError') {
-          res.status(400).send({ message: 'Переданы некорректные данные' });
-          return;
-        }
-
-        res.status(500).send({ message: 'Произошла ошибка сервера' });
-      }));
+      .catch(next));
 };
 
 // Контроллер для логина
 
-module.exports.login = (req, res) => {
+module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
   User.findUserByCredentials(email, password)
@@ -97,15 +73,11 @@ module.exports.login = (req, res) => {
 
       res.send({ token });
     })
-    .catch((err) => {
-      res
-        .status(401)
-        .send({ message: err.message });
-    });
+    .catch(next);
 };
 
 // Обновить информацию о пользователе
-module.exports.updateUser = (req, res) => {
+module.exports.updateUser = (req, res, next) => {
   const { name, about } = req.body;
 
   return User.findByIdAndUpdate(req.user._id, { name, about }, {
@@ -114,19 +86,11 @@ module.exports.updateUser = (req, res) => {
     upsert: true,
   })
     .then((user) => res.send(user))
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(404).send({ message: 'Запрашиваемый ресурс не найден' });
-      } else if (err.name === 'ValidationError') {
-        res.status(400).send({ message: 'Переданы некорректные данные' });
-      } else {
-        res.status(500).send({ message: 'Произошла ошибка сервера' });
-      }
-    });
+    .catch(next);
 };
 
 // Обновить аватар пользователя
-module.exports.updateAvatar = (req, res) => {
+module.exports.updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
 
   return User.findByIdAndUpdate(req.user._id, { avatar }, {
@@ -135,13 +99,5 @@ module.exports.updateAvatar = (req, res) => {
     upsert: true,
   })
     .then((user) => res.send(user))
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(404).send({ message: 'Запрашиваемый ресурс не найден' });
-      } else if (err.name === 'ValidationError') {
-        res.status(400).send({ message: 'Переданы некорректные данные' });
-      } else {
-        res.status(500).send({ message: 'Произошла ошибка сервера' });
-      }
-    });
+    .catch(next);
 };

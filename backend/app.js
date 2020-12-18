@@ -7,6 +7,12 @@ const { PORT = 3000 } = process.env;
 
 const app = express();
 
+// Ошибки валидации запросов
+const { errors } = require('celebrate');
+
+// Логирование
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+
 // Пути для получения данных
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
@@ -21,10 +27,28 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 
 app.use(bodyParser.json());
 
+app.use(requestLogger);
+
 app.use('/', usersRouter);
 app.use('/', cardsRouter);
 app.use('*', (req, res) => {
   res.status(404).send({ message: 'Запрашиваемый ресурс не найден' });
+});
+
+app.use(errorLogger);
+
+app.use(errors());
+
+// Централизованная обработка ошибок
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  if (err.name === 'ValidationError') {
+    res.status(400).send({ message: 'Переданы некорректные данные' });
+  } else if (err.name === 'CastError') {
+    res.status(404).send({ message: 'Запрашиваемый ресурс не найден' });
+  } else {
+    res.status(500).send({ message: 'На сервере произошла ошибка' });
+  }
 });
 
 app.listen(PORT, () => {

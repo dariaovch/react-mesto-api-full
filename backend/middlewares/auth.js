@@ -17,7 +17,6 @@ module.exports = (req, res, next) => {
   try {
     payload = jwt.verify(token, 'top-secret-formillion');
   } catch (err) {
-    // отправим ошибку, если не получилось
     return res
       .status(401)
       .send({ message: 'Необходима авторизация' });
