@@ -25,10 +25,9 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useFindAndModify: false,
   useUnifiedTopology: true,
 });
+app.use(cors());
 
 app.use(bodyParser.json());
-
-app.use(cors());
 
 app.use(requestLogger);
 

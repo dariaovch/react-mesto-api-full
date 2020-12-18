@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://api.dariaovchmesto.students.nomoredomains.icu/';
+export const BASE_URL = 'https://api.dariaovchmesto.students.nomoredomains.icu';
 
 export const checkResponse = (res) => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
 
