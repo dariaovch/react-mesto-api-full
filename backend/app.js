@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 // Назначаем порт, с которого приложение слушает запросы
 const { PORT = 3000 } = process.env;
@@ -26,6 +27,8 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 });
 
 app.use(bodyParser.json());
+
+app.use(cors());
 
 app.use(requestLogger);
 
