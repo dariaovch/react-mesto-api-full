@@ -67,7 +67,7 @@ class Api {
         } else {
             return fetch(`${this._url}cards/${cardId}/likes`, {
                 method: "DELETE",
-                headers:  this._headers
+                headers:  this._headers,
             }).then(res => this._getResponseData(res));
         }
     }
