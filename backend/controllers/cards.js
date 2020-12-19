@@ -25,11 +25,7 @@ module.exports.deleteCard = (req, res, next) => {
       if (!deletedCard) {
         throw new NotFoundError('Запрашиваемый ресурс не найден');
       }
-      if (req.user._id === deletedCard.owner) {
-        res.send({ message: 'Карточка удалена' });
-      } else {
-        throw new Error({ message: 'Нельзя удалять чужие карточки' });
-      }
+      res.status(200).send({ message: 'Карточка удалена' });
     })
     .catch(next);
 };

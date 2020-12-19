@@ -6,7 +6,7 @@ function Card({ item, onCardClick, onCardLike, onCardDelete }) {
   //Подписка на контекст текущего пользователя и получение ID карточки для манипуляций с ней
   const currentUser = React.useContext(CurrentUserContext);
 
-  const isOwn = item.owner._id === currentUser._id;
+  const isOwn = item.owner === currentUser._id;
 
   const cardDeleteButtonClassName = (
     `${isOwn ? 'cards__delete-button cards__delete-button_visible' : 'cards__delete-button'}`

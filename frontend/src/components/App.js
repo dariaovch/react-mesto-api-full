@@ -240,18 +240,9 @@ function App() {
       auth.getContent(token)
         .then((res) => { 
           if(res) {
-            setUserEmail(res.data.email);
+            setUserEmail(res.email);
             setLoggedIn(true)
             history.push('/');
-            // api.getUserInfo(res._id)
-            //   .then((userData) => {
-            //     setCurrentUser({
-            //       name: userData.name,
-            //       about: userData.about,
-            //       avatar: userData.avatar
-            //     })
-            //   })
-            //   .catch((err) => console.log(err))
           }
         })
         .catch((err) => console.log(err))
