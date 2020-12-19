@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
-// const auth = require('../middlewares/auth');
+const auth = require('../middlewares/auth');
 
 const {
   getCards,
@@ -10,16 +10,16 @@ const {
   // dislikeCard,
 } = require('../controllers/cards');
 
-router.get('/cards', getCards);
+router.get('/cards', auth, getCards);
 
 router.post('/cards', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
     link: Joi.string().required(),
   }),
-}), createCard);
+}), auth, createCard);
 
-router.delete('/cards/:id', deleteCard);
+router.delete('/cards/:id', auth, deleteCard);
 
 // router.put('cards/:id/likes', likeCard);
 

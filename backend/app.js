@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const router = require('express').Router();
+// const router = require('express').Router();
 
 // Назначаем порт, с которого приложение слушает запросы
 const { PORT = 3000 } = process.env;
@@ -12,12 +12,12 @@ const app = express();
 // Ошибки валидации запросов
 const { errors } = require('celebrate');
 
-const auth = require('./middlewares/auth');
+// const auth = require('./middlewares/auth');
 
 // Логирование
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const { createUser, login } = require('./controllers/users');
+// const { createUser, login } = require('./controllers/users');
 
 // Пути для получения данных
 const usersRouter = require('./routes/users');
@@ -56,12 +56,6 @@ app.use(express.json(), cors(corsOptions));
 app.use(bodyParser.json());
 
 app.use(requestLogger);
-
-router.post('/signup', createUser);
-
-router.post('/signin', login);
-
-app.use(auth());
 
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
