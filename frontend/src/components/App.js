@@ -47,13 +47,23 @@ function App() {
   const history = useHistory();
 
 
-  //Получаем из API данные пользователя и карточек
-  React.useEffect(() => {
-    api.getAllPageData()
-       .then((argument) => {
-          const [ userData, cardsData ] = argument;
+  // Получаем из API данные пользователя и карточек
+  // React.useEffect(() => {
+  //   api.getAllPageData()
+  //      .then((argument) => {
+  //         const [ userData, cardsData ] = argument;
 
-          setCurrentUser(userData);
+  //         setCurrentUser(userData);
+  //         setCards(cardsData);
+  //      })
+  //      .catch((err) => {
+  //         console.log(err);
+  //      });
+  // }, []);
+
+  React.useEffect(() => {
+    api.getInitialCards()
+       .then((cardsData) => {
           setCards(cardsData);
        })
        .catch((err) => {
@@ -61,6 +71,21 @@ function App() {
        });
   }, []);
 
+  // React.useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   auth.getContent(token)
+  //       .then((res) => { 
+  //         console.log(res)
+  //         if(res) {
+  //           api.getUserInfo(res._id)
+  //             .then((userData) => {
+  //               setCurrentUser(userData)
+  //             })
+  //             .catch((err) => console.log(err))
+  //         }
+  //       })
+  //       .catch((err) => console.log(err))
+  //     }, []);
 
   //Логика открытия и закрытия попапов
 
@@ -216,6 +241,11 @@ function App() {
             setUserEmail(res.data.email);
             setLoggedIn(true)
             history.push('/');
+            api.getUserInfo(res._id)
+              .then((userData) => {
+                setCurrentUser(userData)
+              })
+              .catch((err) => console.log(err))
           }
         })
         .catch((err) => console.log(err))

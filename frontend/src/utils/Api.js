@@ -1,3 +1,6 @@
+import { useImperativeHandle } from 'react';
+import * as auth from './auth.js';
+
 class Api {
     constructor(options) {
         this._url = options.url;
@@ -19,9 +22,13 @@ class Api {
        }
   
 
-    getUserInfo() {
-        return this.getData('users/me')
-           .then(res => this._getResponseData(res));  
+    getUserInfo(userId) {
+        return this.getData('users/me', {
+            body: JSON.stringify({
+                    _id: userId,
+                  })
+        })
+             .then(res => this._getResponseData(res));  
     }
 
     getInitialCards() {
@@ -30,9 +37,9 @@ class Api {
         
     }
 
-    getAllPageData() {
-        return Promise.all([this.getUserInfo(), this.getInitialCards()]);
-    }
+    // getAllPageData() {
+    //     return Promise.all([auth.getContent(), this.getInitialCards()]);
+    // }
 
     saveEditedInfo(formData) {
         return fetch(`${this._url}users/me`, {
@@ -93,10 +100,10 @@ class Api {
 }
 
 const options = {
-    url: 'https://api.dariaovchmesto.students.nomoredomains.icu',
+    url: 'https://api.dariaovchmesto.students.nomoredomains.icu/',
     headers: {
-          //authorization: '57f413af-09ac-4c6d-a557-b4a54c66383d',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         }
     };
 
