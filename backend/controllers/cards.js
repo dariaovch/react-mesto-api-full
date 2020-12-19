@@ -20,17 +20,13 @@ module.exports.createCard = (req, res, next) => {
 
 // Удалить карточку
 module.exports.deleteCard = (req, res, next) => {
-  Card.findById(req.params.id)
-    .then((card) => {
-      if (req.user._id === card.owner) {
-        Card.findByIdAndRemove(req.params.id)
-          .then((deletedCard) => {
-            if (!deletedCard) {
-              throw new NotFoundError('Запрашиваемый ресурс не найден');
-            }
-            res.send({ message: 'Карточка удалена' });
-          })
-          .catch(next);
+  Card.findByIdAndRemove(req.params.id)
+    .then((deletedCard) => {
+      if (!deletedCard) {
+        throw new NotFoundError('Запрашиваемый ресурс не найден');
+      }
+      if (req.user._id === deletedCard.owner) {
+        res.send({ message: 'Карточка удалена' });
       } else {
         throw new Error({ message: 'Нельзя удалять чужие карточки' });
       }
