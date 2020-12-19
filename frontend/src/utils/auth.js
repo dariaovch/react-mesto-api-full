@@ -1,13 +1,13 @@
-export const BASE_URL = 'https://api.dariaovchmesto.students.nomoredomains.icu';
+export const BASE_URL = 'https://api.dariaovchmesto.students.nomoredomains.icu/';
 
 export const checkResponse = (res) => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
 
 export const register = (email, password) => {
-    return fetch(`${BASE_URL}/signup`, {
+    return fetch(`${BASE_URL}signup`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({email, password})
         })
@@ -15,10 +15,10 @@ export const register = (email, password) => {
 };
 
 export const login = (email, password) => {
-    return fetch(`${BASE_URL}/signin`, {
+    return fetch(`${BASE_URL}signin`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({email, password})
         })
@@ -26,11 +26,10 @@ export const login = (email, password) => {
 };
 
 export const getContent = (token) => {
-    return fetch(`${BASE_URL}/users/me`, {
-            method: 'GET',
+    return fetch (`${BASE_URL}users/me`, {
             headers: {
+                authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
-                "Authorization" : `Bearer ${token}`,
             },
         })
         .then(checkResponse)

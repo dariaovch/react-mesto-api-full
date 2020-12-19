@@ -1,6 +1,3 @@
-import { useImperativeHandle } from 'react';
-import * as auth from './auth.js';
-
 class Api {
     constructor(options) {
         this._url = options.url;
@@ -8,7 +5,7 @@ class Api {
     }
 
     getData(name) {
-        return fetch(`${this._url}${name}`, {
+        return fetch (`${this._url}${name}`, {
             headers: this._headers,
         });
     }
@@ -33,9 +30,9 @@ class Api {
         
     }
 
-    // getAllPageData() {
-    //     return Promise.all([auth.getContent(), this.getInitialCards()]);
-    // }
+    getAllPageData() {
+        return Promise.all([this.getUserInfo(), this.getInitialCards()]);
+    }
 
     saveEditedInfo(formData) {
         return fetch(`${this._url}users/me`, {
@@ -99,7 +96,7 @@ const options = {
     url: 'https://api.dariaovchmesto.students.nomoredomains.icu/',
     headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          authorization: `Bearer ${localStorage.getItem('token')}`,
         }
     };
 

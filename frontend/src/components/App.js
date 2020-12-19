@@ -50,7 +50,7 @@ function App() {
   // Получаем из API данные пользователя и карточек
   React.useEffect(() => {
     if(loggedIn) {
-    api.getAllPageData()
+      api.getAllPageData()
        .then((argument) => {
           const [ userData, cardsData ] = argument;
 
