@@ -39,17 +39,17 @@ module.exports.likeCard = (req, res, next) => {
     cardId,
     { $addToSet: { likes: req.user._id } },
     { new: true },
-  ).then((card) => res.status(200).send({ data: card })).catch(next);
+  ).then((card) => res.status(200).send(card)).catch(next);
 };
 
 module.exports.dislikeCard = (req, res, next) => {
-  const cardId = req.params._id;
+  const { cardId } = req.params;
 
   Card.findByIdAndUpdate(
     cardId,
     { $pull: { likes: req.user._id } },
     { new: true },
   )
-    .then((card) => res.status(200).send({ data: card }))
+    .then((card) => res.status(200).send(card))
     .catch(next);
 };
