@@ -31,7 +31,7 @@ module.exports.deleteCard = (req, res, next) => {
     .catch(next);
 };
 
-// Логика постановки и снятия лайка для дальнейшей доработки
+// Логика постановки и снятия лайка
 module.exports.likeCard = (req, res) => {
   const cardId = req.params._id;
 

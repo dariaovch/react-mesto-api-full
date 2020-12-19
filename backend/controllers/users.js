@@ -2,6 +2,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const NotFoundError = require('../errors/not-found-err');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
+
 // Получаем модель пользователя
 const User = require('../models/user');
 
@@ -67,7 +69,7 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        'top-secret-formillion',
+        NODE_ENV === 'production' ? JWT_SECRET : 'top-secrect-formillion',
         { expiresIn: '7d' },
       );
 

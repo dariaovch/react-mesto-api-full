@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-// const router = require('express').Router();
+require('dotenv').config();
 
 // Назначаем порт, с которого приложение слушает запросы
 const { PORT = 3000 } = process.env;
@@ -12,12 +12,8 @@ const app = express();
 // Ошибки валидации запросов
 const { errors } = require('celebrate');
 
-// const auth = require('./middlewares/auth');
-
 // Логирование
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-
-// const { createUser, login } = require('./controllers/users');
 
 // Пути для получения данных
 const usersRouter = require('./routes/users');
@@ -37,21 +33,6 @@ const corsOptions = {
 };
 
 app.use(express.json(), cors(corsOptions));
-
-// app.use(cors());
-
-// app.use((req, res, next) => {
-//   res.setHeader('Access-Control-Allow-Origin', '*');
-//   res.setHeader(
-//     'Access-Control-Allow-Headers',
-//     'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-//   );
-//   res.setHeader(
-//     'Access-Control-Allow-Methods',
-//     'GET, POST, PATCH, DELETE, OPTIONS',
-//   );
-//   next();
-// });
 
 app.use(bodyParser.json());
 

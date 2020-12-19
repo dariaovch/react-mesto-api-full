@@ -160,10 +160,11 @@ function App() {
 
   // Логика постановки и снятия лайков через запрос к API
   function handleCardLike(item) {
-    
-    const isLiked = item.likes.some(i => i._id === currentUser._id);
-    
-    api.changeLikeCardStatus(item._id, !isLiked).then((newCard) => {
+    console.log(item)
+    const isLiked = item.likes.some(i => i.owner === currentUser._id);
+    const cardId = item._id;
+
+    api.changeLikeCardStatus(cardId, !isLiked).then((newCard) => {
       const newCards = cards.map((c) => c._id === item._id ? newCard : c);
       setCards(newCards);
     })
