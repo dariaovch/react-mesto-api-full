@@ -40,12 +40,12 @@ router.patch('/users/me', celebrate({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
   }),
-}), updateUser);
+}), auth, updateUser);
 
 router.patch('/users/me/avatar', celebrate({
   body: Joi.object().keys({
     avatar: Joi.string(),
   }),
-}), updateAvatar);
+}), auth, updateAvatar);
 
 module.exports = router;
