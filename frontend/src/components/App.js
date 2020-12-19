@@ -56,7 +56,6 @@ function App() {
 
           setCurrentUser(userData);
           setCards(cardsData);
-          console.log(cardsData)
        })
        .catch((err) => {
           console.log(err);
@@ -161,7 +160,7 @@ function App() {
   // Логика постановки и снятия лайков через запрос к API
   function handleCardLike(item) {
     console.log(item)
-    const isLiked = item.likes.some(i => i.owner === currentUser._id);
+    const isLiked = item.likes.some(i => i === currentUser._id);
     const cardId = item._id;
 
     api.changeLikeCardStatus(cardId, !isLiked).then((newCard) => {
