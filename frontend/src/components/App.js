@@ -56,6 +56,7 @@ function App() {
 
           setCurrentUser(userData);
           setCards(cardsData);
+          console.log(cardsData)
        })
        .catch((err) => {
           console.log(err);
@@ -163,6 +164,7 @@ function App() {
     const cardId = item._id;
 
     api.changeLikeCardStatus(cardId, !isLiked).then((newCard) => {
+      console.log(newCard)
       const newCards = cards.map((c) => c._id === item._id ? newCard : c);
       setCards(newCards);
     })
