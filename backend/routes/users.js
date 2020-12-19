@@ -14,9 +14,9 @@ const {
 
 router.get('/users', auth, getUsers);
 
-router.get('/users/:id', auth, getUser);
-
 router.get('/users/me', auth, getCurrentUserInfo);
+
+router.get('/users/:id', auth, getUser);
 
 router.post('/signup', celebrate({
   body: Joi.object().keys({
@@ -35,14 +35,14 @@ router.post('/signin', celebrate({
   }),
 }), login);
 
-router.patch('/users/me', auth, celebrate({
+router.patch('/users/me', celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
   }),
 }), updateUser);
 
-router.patch('/users/me/avatar', auth, celebrate({
+router.patch('/users/me/avatar', celebrate({
   body: Joi.object().keys({
     avatar: Joi.string(),
   }),
