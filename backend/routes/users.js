@@ -12,9 +12,19 @@ const {
   updateAvatar,
 } = require('../controllers/users');
 
-router.post('/signup', createUser);
+router.post('/signup', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+  }),
+}), createUser);
 
-router.post('/signin', login);
+router.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+  }),
+}), login);
 
 router.get('/users', auth, getUsers);
 
@@ -31,7 +41,7 @@ router.patch('/users/me', celebrate({
 
 router.patch('/users/me/avatar', celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string(),
+    avatar: Joi.string().uri(),
   }),
 }), auth, updateAvatar);
 
