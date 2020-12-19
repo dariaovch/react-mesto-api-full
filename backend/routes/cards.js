@@ -19,10 +19,10 @@ router.post('/cards', celebrate({
   }),
 }), auth, createCard);
 
+router.delete('/cards/:id', auth, deleteCard);
+
 router.put('cards/:cardId/likes', auth, likeCard);
 
 router.delete('cards/:cardId/likes', auth, dislikeCard);
-
-router.delete('/cards/:id', auth, deleteCard);
 
 module.exports = router;
