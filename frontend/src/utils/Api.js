@@ -22,12 +22,8 @@ class Api {
        }
   
 
-    getUserInfo(userId) {
-        return this.getData('users/me', {
-            body: JSON.stringify({
-                    _id: userId,
-                  })
-        })
+    getUserInfo() {
+        return this.getData('users/me')
              .then(res => this._getResponseData(res));  
     }
 
