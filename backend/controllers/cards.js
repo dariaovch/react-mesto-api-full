@@ -37,7 +37,7 @@ module.exports.likeCard = (req, res) => {
 
   Card.findByIdAndUpdate(
     cardId,
-    { $addToSet: { likes: req.user._id } },
+    { $addToSet: [{ likes: req.user._id }] },
     { new: true },
   )
     .then((card) => res.status(200).send(card))
@@ -51,7 +51,7 @@ module.exports.dislikeCard = (req, res) => {
 
   Card.findByIdAndUpdate(
     cardId,
-    { $pull: { likes: req.user._id } },
+    { $pull: [{ likes: req.user._id }] },
     { new: true },
   )
     .then((card) => res.status(200).send(card))
