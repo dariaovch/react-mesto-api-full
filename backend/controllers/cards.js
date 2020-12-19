@@ -32,9 +32,11 @@ module.exports.deleteCard = (req, res, next) => {
 
 // Логика постановки и снятия лайка для дальнейшей доработки
 module.exports.likeCard = (req, res) => {
-  Card.findByIdAndUpdate(req.params.id,
+  Card.findByIdAndUpdate(
+    req.params.cardId,
     { $addToSet: { likes: req.user._id } },
-    { new: true })
+    { new: true },
+  )
     .then((card) => res.status(200).send(card))
     .catch(() => {
       res.status(500).send({ message: 'Произошла ошибка сервера' });
@@ -42,9 +44,11 @@ module.exports.likeCard = (req, res) => {
 };
 
 module.exports.dislikeCard = (req, res) => {
-  Card.findByIdAndUpdate(req.params.id,
+  Card.findByIdAndUpdate(
+    req.params.cardId,
     { $pull: { likes: req.user._id } },
-    { new: true })
+    { new: true },
+  )
     .then((card) => res.status(200).send(card))
     .catch(() => {
       res.status(500).send({ message: 'Произошла ошибка сервера' });
