@@ -190,12 +190,13 @@ function App() {
     auth.register(email, password)
       .then((res) => {
         console.log('Вы успешно зарегистрировались!')
-        setUserEmail(res.data.email);
+        setUserEmail(res.email);
         setIsSuccessTooltipOpen(true);
         setTimeout(() => 
-          handleLogin(email, password),
+          setIsSuccessTooltipOpen(false),
           3000
         );
+        history.push('/sign-in');
       })
       .catch((err) => {
         if(err.status === '400') {
@@ -216,6 +217,7 @@ function App() {
           localStorage.setItem('token', res.token);
           setLoggedIn(true);
           setUserEmail(email);
+          tokenCheck();
           history.push('/');
         }
       })
