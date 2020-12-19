@@ -12,9 +12,9 @@ const {
   updateAvatar,
 } = require('../controllers/users');
 
-router.post('/signup', createUser);
-
 router.post('/signin', login);
+
+router.post('/signup', createUser);
 
 router.get('/users', auth, getUsers);
 
