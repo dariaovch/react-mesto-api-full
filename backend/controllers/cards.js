@@ -32,7 +32,7 @@ module.exports.deleteCard = (req, res, next) => {
 };
 
 // Логика постановки и снятия лайка
-module.exports.likeCard = (req, res) => {
+module.exports.likeCard = (req, res, next) => {
   const cardId = req.params._id;
 
   Card.findByIdAndUpdate(
@@ -40,13 +40,11 @@ module.exports.likeCard = (req, res) => {
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
-    .then((card) => res.status(200).send(card))
-    .catch(() => {
-      res.status(500).send({ message: 'Произошла ошибка сервера' });
-    });
+    .then((card) => res.status(200).send({ data: card }))
+    .catch(next);
 };
 
-module.exports.dislikeCard = (req, res) => {
+module.exports.dislikeCard = (req, res, next) => {
   const cardId = req.params._id;
 
   Card.findByIdAndUpdate(
@@ -54,8 +52,6 @@ module.exports.dislikeCard = (req, res) => {
     { $pull: { likes: req.user._id } },
     { new: true },
   )
-    .then((card) => res.status(200).send(card))
-    .catch(() => {
-      res.status(500).send({ message: 'Произошла ошибка сервера' });
-    });
+    .then((card) => res.status(200).send({ data: card }))
+    .catch(next);
 };
