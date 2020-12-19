@@ -33,8 +33,10 @@ module.exports.deleteCard = (req, res, next) => {
 
 // Логика постановки и снятия лайка для дальнейшей доработки
 module.exports.likeCard = (req, res) => {
+  const cardId = req.params._id;
+
   Card.findByIdAndUpdate(
-    req.params.cardId,
+    cardId,
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
@@ -45,8 +47,10 @@ module.exports.likeCard = (req, res) => {
 };
 
 module.exports.dislikeCard = (req, res) => {
+  const cardId = req.params._id;
+
   Card.findByIdAndUpdate(
-    req.params.cardId,
+    cardId,
     { $pull: { likes: req.user._id } },
     { new: true },
   )
