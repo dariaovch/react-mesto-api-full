@@ -12,12 +12,7 @@ const {
   updateAvatar,
 } = require('../controllers/users');
 
-router.post('/signup', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-  }),
-}), createUser);
+router.post('/signup', createUser);
 
 router.post('/signin', login);
 
