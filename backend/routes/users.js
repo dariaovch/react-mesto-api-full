@@ -12,12 +12,6 @@ const {
   updateAvatar,
 } = require('../controllers/users');
 
-router.get('/users', auth, getUsers);
-
-router.get('/users/me', auth, getCurrentUserInfo);
-
-router.get('/users/:id', auth, getUser);
-
 router.post('/signup', celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
@@ -34,6 +28,12 @@ router.post('/signin', celebrate({
     password: Joi.string().required().min(6),
   }),
 }), login);
+
+router.get('/users', auth, getUsers);
+
+router.get('/users/me', auth, getCurrentUserInfo);
+
+router.get('/users/:id', auth, getUser);
 
 router.patch('/users/me', celebrate({
   body: Joi.object().keys({
