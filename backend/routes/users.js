@@ -12,13 +12,13 @@ const {
   updateAvatar,
 } = require('../controllers/users');
 
-router.get('/users', auth, getUsers);
-
-router.get('/users/me', auth, getCurrentUserInfo);
-
 router.post('/signup', createUser);
 
 router.post('/signin', login);
+
+router.get('/users', auth, getUsers);
+
+router.get('/users/me', auth, getCurrentUserInfo);
 
 router.get('/users/:id', auth, getUser);
 
@@ -31,7 +31,7 @@ router.patch('/users/me', celebrate({
 
 router.patch('/users/me/avatar', celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().uri(),
+    avatar: Joi.string(),
   }),
 }), auth, updateAvatar);
 
