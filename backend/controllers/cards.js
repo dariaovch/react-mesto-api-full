@@ -23,13 +23,20 @@ module.exports.createCard = (req, res, next) => {
 
 // Удалить карточку
 module.exports.deleteCard = (req, res, next) => {
-  Card.findByIdAndRemove(req.params.id)
-    .then((deletedCard) => {
-      if (!deletedCard) {
+  Card.findById(req.params.id)
+    .then((card) => {
+      if (!card) {
         throw new CastError('Невалидный id');
       }
-      if (req.user._id === deletedCard.owner) {
-        res.status(200).send({ message: 'Карточка удалена' });
+
+      if (req.user._id === card.owner) {
+        Card.findByIdAndRemove(card.id)
+          .then((deletedCard) => {
+            if (!deletedCard) {
+              throw new CastError('Невалидный id');
+            }
+            res.status(200).send({ message: 'Карточка удалена' });
+          });
       } else {
         throw new ForbiddenError('Нельзя удалять чужие карточки');
       }
