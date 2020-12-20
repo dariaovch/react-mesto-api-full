@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const NotFoundError = require('../errors/not-found-err');
+const ConflictError = require('../errors/conflict-error');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -56,8 +57,14 @@ module.exports.createUser = (req, res, next) => {
       email,
       password: hash,
     })
-      .then((user) => res.send(user))
-      .catch(next));
+      .then((user) => res.send(user._id, user.name, user.about, user.avatar, user.email))
+      .catch((err) => {
+        if (err.name === 'MongoError' || err.code === 11000) {
+          throw new ConflictError('Такой email уже зарегистрирован');
+        } else {
+          next(err);
+        }
+      }));
 };
 
 // Контроллер для логина
