@@ -85,7 +85,6 @@ module.exports.updateUser = (req, res, next) => {
   return User.findByIdAndUpdate(req.user._id, { name, about }, {
     new: true,
     runValidators: true,
-    upsert: true,
   })
     .then((user) => res.send(user))
     .catch(next);
@@ -98,7 +97,6 @@ module.exports.updateAvatar = (req, res, next) => {
   return User.findByIdAndUpdate(req.user._id, { avatar }, {
     new: true,
     runValidators: true,
-    upsert: true,
   })
     .then((user) => res.send(user))
     .catch(next);

@@ -39,7 +39,13 @@ module.exports.likeCard = (req, res, next) => {
     cardId,
     { $addToSet: { likes: req.user._id } },
     { new: true },
-  ).then((card) => res.status(200).send(card)).catch(next);
+  ).then((card) => {
+    if (!card) {
+      throw new NotFoundError('Запрашиваемый ресурс не найден');
+    }
+    res.status(200).send(card);
+  })
+    .catch(next);
 };
 
 module.exports.dislikeCard = (req, res, next) => {
@@ -50,6 +56,11 @@ module.exports.dislikeCard = (req, res, next) => {
     { $pull: { likes: req.user._id } },
     { new: true },
   )
-    .then((card) => res.status(200).send(card))
+    .then((card) => {
+      if (!card) {
+        throw new NotFoundError('Запрашиваемый ресурс не найден');
+      }
+      res.status(200).send(card);
+    })
     .catch(next);
 };
