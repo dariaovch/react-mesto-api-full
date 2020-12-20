@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const NotFoundError = require('../errors/not-found-err');
 const ConflictError = require('../errors/conflict-error');
+const CastError = require('../errors/cast-error');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -20,7 +21,7 @@ module.exports.getUser = (req, res, next) => {
   User.findById(req.params.id)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Нет пользователя с таким id');
+        throw new CastError('Невалидный id');
       }
       res.send(user);
     })
@@ -57,7 +58,7 @@ module.exports.createUser = (req, res, next) => {
       email,
       password: hash,
     })
-      .then((user) => res.send(user._id, user.name, user.about, user.avatar, user.email))
+      .then(() => res.send({ message: 'Вы успешно зарегистрировались!' }))
       .catch((err) => {
         if (err.name === 'MongoError' || err.code === 11000) {
           throw new ConflictError('Такой email уже зарегистрирован');

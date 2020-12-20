@@ -18,6 +18,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 // Пути для получения данных
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
+const NotFoundError = require('./errors/not-found-err');
 
 // Объект опций содержит свойства для совместимости mongoose и MongoDB
 mongoose.connect('mongodb://localhost:27017/mestodb', {
@@ -59,8 +60,9 @@ app.get('/crash-test', () => {
 
 app.use('/', usersRouter);
 app.use('/', cardsRouter);
-app.use('*', (req, res) => {
-  res.status(404).send({ message: 'Запрашиваемый ресурс не найден' });
+
+app.use('*', () => {
+  throw new NotFoundError('Запрашиваемый ресурс не найден');
 });
 
 app.use(errorLogger);
@@ -77,7 +79,7 @@ app.use((err, req, res, next) => {
     .send({
       message: statusCode === 500
         ? 'На сервере произошла ошибка'
-        : message
+        : message,
     });
 
   // if (err.name === 'ValidationError') {

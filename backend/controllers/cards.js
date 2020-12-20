@@ -1,6 +1,7 @@
 // Получаем модель карточки
 const Card = require('../models/card');
 const NotFoundError = require('../errors/not-found-err');
+const CastError = require('../errors/cast-error');
 
 // Получить массив всех карточек
 module.exports.getCards = (req, res, next) => {
@@ -24,7 +25,7 @@ module.exports.deleteCard = (req, res, next) => {
   Card.findByIdAndRemove(req.params.id)
     .then((deletedCard) => {
       if (!deletedCard) {
-        throw new NotFoundError('Запрашиваемый ресурс не найден');
+        throw new CastError('Невалидный id');
       }
       res.status(200).send({ message: 'Карточка удалена' });
     })
@@ -41,7 +42,7 @@ module.exports.likeCard = (req, res, next) => {
     { new: true },
   ).then((card) => {
     if (!card) {
-      throw new NotFoundError('Запрашиваемый ресурс не найден');
+      throw new CastError('Невалидный id');
     }
     res.status(200).send(card);
   })
@@ -58,7 +59,7 @@ module.exports.dislikeCard = (req, res, next) => {
   )
     .then((card) => {
       if (!card) {
-        throw new NotFoundError('Запрашиваемый ресурс не найден');
+        throw new CastError('Невалидный id');
       }
       res.status(200).send(card);
     })
