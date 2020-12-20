@@ -1,7 +1,8 @@
 // Получаем модель карточки
 const Card = require('../models/card');
-const NotFoundError = require('../errors/not-found-err');
+// const NotFoundError = require('../errors/not-found-err');
 const CastError = require('../errors/cast-error');
+const ForbiddenError = require('../errors/forbidden-error');
 
 // Получить массив всех карточек
 module.exports.getCards = (req, res, next) => {
@@ -27,7 +28,11 @@ module.exports.deleteCard = (req, res, next) => {
       if (!deletedCard) {
         throw new CastError('Невалидный id');
       }
-      res.status(200).send({ message: 'Карточка удалена' });
+      if (req.user._id === deletedCard.owner) {
+        res.status(200).send({ message: 'Карточка удалена' });
+      } else {
+        throw new ForbiddenError('Нельзя удалять чужие карточки');
+      }
     })
     .catch(next);
 };
