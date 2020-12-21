@@ -71,13 +71,6 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().unique().email(),
-    password: Joi.string().min(6),
-  }),
-});
-
 router.post('/signup', celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
