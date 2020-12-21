@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv').config();
 const router = require('express').Router();
-const { celebrate, Joi } = require('celebrate');
+// const { celebrate, Joi } = require('celebrate');
 
 // Назначаем порт, с которого приложение слушает запросы
 const { PORT = 3000 } = process.env;
@@ -23,6 +23,7 @@ const cardsRouter = require('./routes/cards');
 const NotFoundError = require('./errors/not-found-err');
 
 const { createUser, login } = require('./controllers/users');
+const auth = require('./middlewares/auth');
 
 // Объект опций содержит свойства для совместимости mongoose и MongoDB
 mongoose.connect('mongodb://localhost:27017/mestodb', {
@@ -71,22 +72,11 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-router.post('/signin', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().unique().email(),
-    password: Joi.string().min(6),
-  }),
-}), login);
+router.post('/signup', createUser);
 
-router.post('/signup', celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string(),
-    email: Joi.string().unique().email(),
-    password: Joi.string().min(6),
-  }),
-}), createUser);
+router.post('/signin', login);
+
+app.use(auth());
 
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
