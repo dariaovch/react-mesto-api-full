@@ -23,7 +23,9 @@ module.exports.createCard = (req, res, next) => {
 
 // Удалить карточку
 module.exports.deleteCard = (req, res, next) => {
-  Card.findById(req.params.id)
+  const { cardId } = req.params;
+
+  Card.findById(cardId)
     .then((card) => {
       if (!card) {
         throw new CastError('Невалидный id');
