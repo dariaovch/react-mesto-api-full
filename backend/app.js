@@ -82,8 +82,7 @@ app.post('/signin', celebrate({
 app.post('/signup', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
-    // eslint-disable-next-line no-useless-escape
-    password: Joi.string().required().min(6).pattern(new RegExp(/[^\s\\]/)),
+    password: Joi.string().required().min(6),
   }),
 }), createUser);
 
