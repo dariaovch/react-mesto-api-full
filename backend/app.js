@@ -33,11 +33,11 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 });
 
 const allowedCors = [
-  'http://localhost:3000',
+  'localhost:3000',
   'https://dariaovchmesto.students.nomoredomains.icu'
 ];
 
-app.use(cars({
+app.use(cors({
   origin: allowedCors,
 }))
 
