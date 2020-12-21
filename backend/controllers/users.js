@@ -1,7 +1,5 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
-
 const NotFoundError = require('../errors/not-found-err');
 const ConflictError = require('../errors/conflict-error');
 const CastError = require('../errors/cast-error');
