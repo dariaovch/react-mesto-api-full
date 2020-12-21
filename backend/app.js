@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv').config();
 // const router = require('express').Router();
-// const { celebrate, Joi } = require('celebrate');
+const { celebrate, Joi } = require('celebrate');
 
 // Назначаем порт, с которого приложение слушает запросы
 const { PORT = 3000 } = process.env;
@@ -72,7 +72,12 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-app.post('/signin', login);
+app.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(6),
+  }),
+}), login);
 
 app.post('/signup', createUser);
 
