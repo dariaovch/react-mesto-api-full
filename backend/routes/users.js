@@ -12,8 +12,6 @@ const {
   updateAvatar,
 } = require('../controllers/users');
 
-router.get('/', getUsers);
-
 router.get('/me', getCurrentUserInfo);
 
 router.get('/:id', getUser);
@@ -31,6 +29,6 @@ router.patch('/me/avatar', celebrate({
   }),
 }), updateAvatar);
 
-router.get('/:id', getUser);
+router.get('/', getUsers);
 
 module.exports = router;
