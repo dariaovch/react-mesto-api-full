@@ -22,8 +22,6 @@ const urlValidator = (value) => {
   return value;
 };
 
-router.get('/', getUsers);
-
 router.get('/me', getCurrentUserInfo);
 
 router.get('/:id', celebrate({
@@ -44,5 +42,7 @@ router.patch('/me/avatar', celebrate({
     avatar: Joi.string().custom(urlValidator),
   }),
 }), updateAvatar);
+
+router.get('/', getUsers);
 
 module.exports = router;
