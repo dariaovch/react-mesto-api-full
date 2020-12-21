@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv').config();
-const router = require('express').Router();
+// const router = require('express').Router();
 // const { celebrate, Joi } = require('celebrate');
 
 // Назначаем порт, с которого приложение слушает запросы
@@ -76,7 +76,7 @@ app.post('/signin', login);
 
 app.post('/signup', createUser);
 
-app.use(auth());
+app.use(auth);
 
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
