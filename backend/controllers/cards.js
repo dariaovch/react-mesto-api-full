@@ -31,7 +31,7 @@ module.exports.deleteCard = (req, res, next) => {
         throw new CastError('Невалидный id');
       }
 
-      if (req.user._id === card.owner) {
+      if (req.user._id === card.owner.toString()) {
         Card.findByIdAndRemove(card.id)
           .then((deletedCard) => {
             if (!deletedCard) {
