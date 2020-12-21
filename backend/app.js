@@ -72,12 +72,7 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-app.post('/signup', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email().unique(),
-    password: Joi.string().required().min(6),
-  }),
-}), createUser);
+app.post('/signup', createUser);
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
