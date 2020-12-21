@@ -5,6 +5,7 @@ const cors = require('cors');
 require('dotenv').config();
 // const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
+const helmet = require('helmet');
 
 // Назначаем порт, с которого приложение слушает запросы
 const { PORT = 3000 } = process.env;
@@ -48,6 +49,8 @@ const corsOptions = {
 };
 
 app.use(express.json(), cors(corsOptions));
+
+app.use(helmet());
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
