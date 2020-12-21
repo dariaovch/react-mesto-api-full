@@ -22,24 +22,24 @@ const urlValidator = (value) => {
   return value;
 };
 
-router.get('/', getUsers);
+router.get('/users', getUsers);
 
-router.get('/me', getCurrentUserInfo);
+router.get('users/me', getCurrentUserInfo);
 
-router.get('/:id', celebrate({
+router.get('users/:id', celebrate({
   params: Joi.object().keys({
     id: Joi.string().alphanum().length(24).hex(),
   }),
 }), getUser);
 
-router.patch('/me', celebrate({
+router.patch('users/me', celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
   }),
 }), updateUser);
 
-router.patch('/me/avatar', celebrate({
+router.patch('users/me/avatar', celebrate({
   body: Joi.object().keys({
     avatar: Joi.string().custom(urlValidator),
   }),

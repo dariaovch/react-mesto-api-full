@@ -89,8 +89,8 @@ app.post('/signup', celebrate({
 
 app.use(auth);
 
-app.use('/users', usersRouter);
-app.use('/cards', cardsRouter);
+app.use('/', usersRouter);
+app.use('/', cardsRouter);
 
 app.use('*', () => {
   throw new NotFoundError('Запрашиваемый ресурс не найден');
