@@ -39,7 +39,7 @@ const allowedCors = [
 
 app.use(cors({
   origin: allowedCors,
-}))
+}));
 
 // const corsOptions = {
 //   origin: '*',
@@ -59,7 +59,7 @@ app.use(cors({
 //     'GET, POST, PATCH, DELETE, OPTIONS',
 //   );
 //   next();
-});
+// });
 
 app.use(bodyParser.json());
 
@@ -74,20 +74,17 @@ app.get('/crash-test', () => {
 router.post('/signup', celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
-    about: Joi.string().min(6).max(30),
+    about: Joi.string().min(2).max(30),
     avatar: Joi.string(),
-    email: Joi.string().min(6).unique().email(),
-    password: Joi.string().min(6).max(30),
+    email: Joi.string().unique().email(),
+    password: Joi.string().min(6),
   }),
 }), createUser);
 
 router.post('/signin', celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(6).max(30),
-    avatar: Joi.string(),
-    email: Joi.string().min(6).unique().email(),
-    password: Joi.string().min(6).max(30),
+    email: Joi.string().unique().email(),
+    password: Joi.string().min(6),
   }),
 }), login);
 
