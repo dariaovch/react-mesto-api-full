@@ -17,7 +17,7 @@ const CastError = require('../errors/cast-error');
 
 const urlValidator = (value) => {
   if (!validator.isURL(value)) {
-    throw new CastError('Переданы некорректные данные');
+    throw new CastError('Передана некорректная ссылка');
   }
   return value;
 };
