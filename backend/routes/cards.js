@@ -10,19 +10,19 @@ const {
   dislikeCard,
 } = require('../controllers/cards');
 
-router.get('/cards', auth, getCards);
+router.get('/', auth, getCards);
 
-router.post('/cards', celebrate({
+router.post('/', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
     link: Joi.string().required(),
   }),
 }), auth, createCard);
 
-router.delete('/cards/:id', auth, deleteCard);
+router.delete('/:id', auth, deleteCard);
 
-router.put('/cards/:cardId/likes', auth, likeCard);
+router.put('/:cardId/likes', auth, likeCard);
 
-router.delete('/cards/:cardId/likes', auth, dislikeCard);
+router.delete('/:cardId/likes', auth, dislikeCard);
 
 module.exports = router;

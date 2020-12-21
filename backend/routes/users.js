@@ -6,40 +6,26 @@ const {
   getUsers,
   getUser,
   getCurrentUserInfo,
-  createUser,
-  login,
+  // createUser,
+  // login,
   updateUser,
   updateAvatar,
 } = require('../controllers/users');
 
-router.get('/users', auth, getUsers);
+router.get('/', auth, getUsers);
 
-router.get('/users/me', auth, getCurrentUserInfo);
+router.get('/me', auth, getCurrentUserInfo);
 
-router.post('/signup', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().min(6).unique().email(),
-    password: Joi.string().min(6).max(30),
-  }),
-}), createUser);
+router.get('/:id', auth, getUser);
 
-router.post('/signin', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().min(6).unique().email(),
-    password: Joi.string().min(6).max(30),
-  }),
-}), login);
-
-router.get('/users/:id', auth, getUser);
-
-router.patch('/users/me', celebrate({
+router.patch('/me', celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
   }),
 }), auth, updateUser);
 
-router.patch('/users/me/avatar', celebrate({
+router.patch('/me/avatar', celebrate({
   body: Joi.object().keys({
     avatar: Joi.string(),
   }),
