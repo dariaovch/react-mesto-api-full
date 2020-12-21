@@ -71,6 +71,13 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
+router.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().unique().email(),
+    password: Joi.string().min(6),
+  }),
+}), login);
+
 router.post('/signup', celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
@@ -80,8 +87,6 @@ router.post('/signup', celebrate({
     password: Joi.string().min(6),
   }),
 }), createUser);
-
-router.post('/signin', login);
 
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
