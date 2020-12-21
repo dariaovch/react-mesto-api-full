@@ -72,9 +72,9 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-router.post('/signin', login);
+app.post('/signin', login);
 
-router.post('/signup', createUser);
+app.post('/signup', createUser);
 
 app.use(auth());
 
