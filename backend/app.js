@@ -32,34 +32,34 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useUnifiedTopology: true,
 });
 
-const allowedCors = [
-  'localhost:3000',
-  'https://dariaovchmesto.students.nomoredomains.icu'
-];
+// const allowedCors = [
+//   'localhost:3000',
+//   'https://dariaovchmesto.students.nomoredomains.icu'
+// ];
 
-app.use(cors({
-  origin: allowedCors,
-}));
+// app.use(cors({
+//   origin: allowedCors,
+// }));
 
-// const corsOptions = {
-//   origin: '*',
-//   optionsSuccessStatus: 200,
-// };
+const corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200,
+};
 
-// app.use(express.json(), cors(corsOptions));
+app.use(express.json(), cors(corsOptions));
 
-// app.use((req, res, next) => {
-//   res.setHeader('Access-Control-Allow-Origin', '*');
-//   res.setHeader(
-//     'Access-Control-Allow-Headers',
-//     'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-//   );
-//   res.setHeader(
-//     'Access-Control-Allow-Methods',
-//     'GET, POST, PATCH, DELETE, OPTIONS',
-//   );
-//   next();
-// });
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+  );
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, PATCH, DELETE, OPTIONS',
+  );
+  next();
+});
 
 app.use(bodyParser.json());
 
@@ -69,6 +69,13 @@ app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
+});
+
+celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().unique().email(),
+    password: Joi.string().min(6),
+  }),
 });
 
 router.post('/signup', celebrate({
@@ -81,12 +88,7 @@ router.post('/signup', celebrate({
   }),
 }), createUser);
 
-router.post('/signin', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().unique().email(),
-    password: Joi.string().min(6),
-  }),
-}), login);
+router.post('/signin', login);
 
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
