@@ -12,9 +12,9 @@ const {
   updateAvatar,
 } = require('../controllers/users');
 
-router.get('/users', getUsers);
-
 router.get('/me', getCurrentUserInfo);
+
+router.get('/users', getUsers);
 
 router.get('/:id', getUser);
 
