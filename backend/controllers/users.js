@@ -25,7 +25,12 @@ module.exports.getUser = (req, res, next) => {
       }
       res.send(user);
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        throw new CastError('Невалидный id');
+      }
+      next(err);
+    });
 };
 
 // Получить информацию о текущем пользователе
@@ -60,11 +65,10 @@ module.exports.createUser = (req, res, next) => {
     })
       .then(() => res.send({ message: 'Вы успешно зарегистрировались!' }))
       .catch((err) => {
-        if (err.name === 'MongoError' || err.code === 11000) {
+        if (err.code === 11000 || err.name === 'MongoError') {
           throw new ConflictError('Такой email уже зарегистрирован');
-        } else {
-          next(err);
         }
+        next(err);
       }));
 };
 
