@@ -45,7 +45,7 @@ module.exports.deleteCard = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if (err.statusCode === 400) {
+      if (err.kind === 'ObjectId') {
         throw new CastError('Невалидный id');
       }
       next(err);
@@ -67,7 +67,7 @@ module.exports.likeCard = (req, res, next) => {
     res.status(200).send(card);
   })
     .catch((err) => {
-      if (err.statusCode === 400) {
+      if (err.kind === 'ObjectId') {
         throw new CastError('Невалидный id');
       }
       next(err);
@@ -89,7 +89,7 @@ module.exports.dislikeCard = (req, res, next) => {
       res.status(200).send(card);
     })
     .catch((err) => {
-      if (err.statusCode === 400) {
+      if (err.kind === 'ObjectId') {
         throw new CastError('Невалидный id');
       }
       next(err);

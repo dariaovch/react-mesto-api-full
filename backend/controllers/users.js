@@ -21,7 +21,7 @@ module.exports.getUser = (req, res, next) => {
   User.findById(req.params.id)
     .then((user) => {
       if (!user) {
-        throw new CastError('Невалидный id');
+        throw new NotFoundError('Запрашиваемый ресурс не найден');
       }
       res.send(user);
     })
@@ -65,8 +65,8 @@ module.exports.createUser = (req, res, next) => {
     })
       .then(() => res.send({ message: 'Вы успешно зарегистрировались!' }))
       .catch((err) => {
-        if (err.code === 11000) {
-          throw new ConflictError('Такой email уже зарегистрирован');
+        if (err.code === 11000 || err.name === 'MongoError') {
+          next(new ConflictError('Такой email уже зарегистрирован'));
         }
         next(err);
       }));
