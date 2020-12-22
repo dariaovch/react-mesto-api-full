@@ -26,7 +26,7 @@ module.exports.getUser = (req, res, next) => {
       res.send(user);
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err.statusCode === 400) {
         throw new CastError('Невалидный id');
       }
       next(err);
@@ -65,7 +65,7 @@ module.exports.createUser = (req, res, next) => {
     })
       .then(() => res.send({ message: 'Вы успешно зарегистрировались!' }))
       .catch((err) => {
-        if (err.code === 11000 || err.name === 'MongoError') {
+        if (err.code === 11000) {
           throw new ConflictError('Такой email уже зарегистрирован');
         }
         next(err);
